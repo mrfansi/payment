@@ -2,6 +2,7 @@
 
 namespace Mrfansi\Payment;
 
+use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -12,7 +13,14 @@ class PaymentServiceProvider extends PackageServiceProvider
         $package
             ->name('payment')
             ->hasConfigFile()
-            ->hasMigration('create_payment_table');
+            ->hasMigration('create_payment_table')
+            ->hasInstallCommand(function (InstallCommand $command) {
+                $command
+                    ->publishConfigFile()
+                    ->publishMigrations()
+                    ->copyAndRegisterServiceProviderInApp()
+                    ->askToStarRepoOnGitHub('mrfansi/payment');
+            });
     }
 
     public function packageRegistered(): void
