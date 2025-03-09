@@ -18,7 +18,7 @@ class PaymentServiceProvider extends PackageServiceProvider
     public function packageRegistered(): void
     {
         $this->app->singleton(Payment::class, function ($app) {
-            return new Payment();
+            return new Payment;
         });
 
         $this->app->alias(Payment::class, 'payment');

@@ -21,8 +21,8 @@ class XenditService extends AbstractPaymentService
     protected function setupHeaders(): array
     {
         return [
-            'Authorization' => 'Basic ' . base64_encode($this->config['secret_key'] . ':'),
-            'Content-Type' => 'application/json'
+            'Authorization' => 'Basic '.base64_encode($this->config['secret_key'].':'),
+            'Content-Type' => 'application/json',
         ];
     }
 
@@ -46,7 +46,7 @@ class XenditService extends AbstractPaymentService
                 'email' => $data['customer']['email'] ?? null,
                 'given_names' => $data['customer']['name'] ?? null,
                 'mobile_number' => $data['customer']['phone'] ?? null,
-            ]
+            ],
         ];
 
         return $this->request('POST', '/v2/invoices', array_filter($payload));

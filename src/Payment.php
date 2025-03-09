@@ -31,13 +31,13 @@ class Payment
     {
         $name = strtolower($name);
 
-        if (!isset($this->gateways[$name])) {
+        if (! isset($this->gateways[$name])) {
             throw new InvalidArgumentException("Payment gateway [{$name}] not supported.");
         }
 
-        if (!isset($this->instances[$name])) {
+        if (! isset($this->instances[$name])) {
             $class = $this->gateways[$name];
-            $this->instances[$name] = new $class();
+            $this->instances[$name] = new $class;
         }
 
         return $this->instances[$name];
@@ -49,6 +49,7 @@ class Payment
     public function getDefaultGateway(): PaymentServiceInterface
     {
         $default = config('payment.default', 'xendit');
+
         return $this->gateway($default);
     }
 

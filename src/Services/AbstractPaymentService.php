@@ -37,8 +37,6 @@ abstract class AbstractPaymentService implements PaymentServiceInterface
 
     /**
      * Set up headers for API requests
-     *
-     * @return array
      */
     abstract protected function setupHeaders(): array;
 
@@ -71,7 +69,7 @@ abstract class AbstractPaymentService implements PaymentServiceInterface
     protected function request(string $method, string $endpoint, array $data = []): Response
     {
         return Http::withHeaders($this->setupHeaders())
-                    ->baseUrl($this->baseUrl)
+            ->baseUrl($this->baseUrl)
             ->{strtolower($method)}($endpoint, $data);
     }
 

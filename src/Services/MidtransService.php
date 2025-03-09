@@ -22,9 +22,9 @@ class MidtransService extends AbstractPaymentService
     protected function setupHeaders(): array
     {
         return [
-            'Authorization' => 'Basic ' . base64_encode($this->config['server_key'] . ':'),
+            'Authorization' => 'Basic '.base64_encode($this->config['server_key'].':'),
             'Content-Type' => 'application/json',
-            'Accept' => 'application/json'
+            'Accept' => 'application/json',
         ];
     }
 
@@ -38,29 +38,29 @@ class MidtransService extends AbstractPaymentService
         $payload = [
             'transaction_details' => [
                 'order_id' => $data['reference_id'] ?? uniqid('mdt_', true),
-                'gross_amount' => $data['amount']
+                'gross_amount' => $data['amount'],
             ],
             'customer_details' => [
                 'first_name' => $data['customer']['name'] ?? null,
                 'email' => $data['customer']['email'] ?? null,
-                'phone' => $data['customer']['phone'] ?? null
+                'phone' => $data['customer']['phone'] ?? null,
             ],
             'enabled_payments' => $data['payment_methods'] ?? [],
             'credit_card' => [
-                'secure' => true
+                'secure' => true,
             ],
             'expiry' => [
                 'duration' => $data['duration'] ?? 24,
-                'unit' => 'hour'
+                'unit' => 'hour',
             ],
             'callbacks' => [
                 'finish' => $callbacks['success_redirect_url'],
-                'error' => $callbacks['failure_redirect_url']
-            ]
+                'error' => $callbacks['failure_redirect_url'],
+            ],
         ];
 
         return $this->request('POST', '/transactions', array_filter($payload, function ($value) {
-            return !is_null($value) && (!is_array($value) || !empty(array_filter($value)));
+            return ! is_null($value) && (! is_array($value) || ! empty(array_filter($value)));
         }));
     }
 

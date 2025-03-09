@@ -22,13 +22,13 @@ class IpaymuService extends AbstractPaymentService
     protected function setupHeaders(): array
     {
         $timestamp = date('YmdHis');
-        $signature = hash('sha256', $this->config['va'] . ':' . $timestamp . ':' . $this->config['api_key']);
+        $signature = hash('sha256', $this->config['va'].':'.$timestamp.':'.$this->config['api_key']);
 
         return [
             'Content-Type' => 'application/json',
             'va' => $this->config['va'],
             'signature' => $signature,
-            'timestamp' => $timestamp
+            'timestamp' => $timestamp,
         ];
     }
 
@@ -53,7 +53,7 @@ class IpaymuService extends AbstractPaymentService
             'buyerPhone' => $data['customer']['phone'] ?? null,
             'expired' => $data['duration'] ?? 24, // hours
             'paymentMethod' => $data['payment_method'] ?? null,
-            'paymentChannel' => $data['payment_channel'] ?? null
+            'paymentChannel' => $data['payment_channel'] ?? null,
         ];
 
         return $this->request('POST', '/payment/direct', array_filter($payload));
@@ -65,7 +65,7 @@ class IpaymuService extends AbstractPaymentService
     public function getStatus(string $referenceId): Response
     {
         return $this->request('POST', '/payment/status', [
-            'transactionId' => $referenceId
+            'transactionId' => $referenceId,
         ]);
     }
 
@@ -75,7 +75,7 @@ class IpaymuService extends AbstractPaymentService
     public function cancel(string $referenceId): Response
     {
         return $this->request('POST', '/payment/cancel', [
-            'transactionId' => $referenceId
+            'transactionId' => $referenceId,
         ]);
     }
 }
