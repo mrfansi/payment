@@ -27,6 +27,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Callback URLs
+    |--------------------------------------------------------------------------
+    |
+    | Configure the default callback URLs for payment notifications.
+    | These URLs can be overridden when creating payments.
+    |
+    */
+    'callbacks' => [
+        'success_url' => env('PAYMENT_SUCCESS_URL', 'https://your-app.com/payment/success'),
+        'failure_url' => env('PAYMENT_FAILURE_URL', 'https://your-app.com/payment/failed'),
+        'notification_url' => env('PAYMENT_NOTIFICATION_URL', 'https://your-app.com/payment/notification'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Payment Gateways
     |--------------------------------------------------------------------------
     |

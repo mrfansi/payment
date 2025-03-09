@@ -37,15 +37,17 @@ class IpaymuService extends AbstractPaymentService
      */
     public function createPayment(array $data): Response
     {
+        $callbacks = $this->getCallbackUrls($data);
+
         $payload = [
             'reference_id' => $data['reference_id'] ?? uniqid('ipm_', true),
             'product' => [$data['description'] ?? 'Payment'],
             'qty' => [1],
             'price' => [$data['amount']],
             'amount' => $data['amount'],
-            'return_url' => $data['success_redirect_url'] ?? null,
-            'cancel_url' => $data['failure_redirect_url'] ?? null,
-            'notify_url' => $data['notify_url'] ?? null,
+            'return_url' => $callbacks['success_redirect_url'],
+            'cancel_url' => $callbacks['failure_redirect_url'],
+            'notify_url' => $callbacks['notify_url'],
             'buyerName' => $data['customer']['name'] ?? null,
             'buyerEmail' => $data['customer']['email'] ?? null,
             'buyerPhone' => $data['customer']['phone'] ?? null,

@@ -39,6 +39,11 @@ Add your payment gateway credentials to your `.env` file:
 PAYMENT_GATEWAY=xendit
 PAYMENT_MODE=sandbox
 
+# Default callback URLs (optional)
+PAYMENT_SUCCESS_URL=https://your-app.com/payment/success
+PAYMENT_FAILURE_URL=https://your-app.com/payment/failed
+PAYMENT_NOTIFICATION_URL=https://your-app.com/payment/notification
+
 # Xendit credentials
 XENDIT_SANDBOX_SECRET_KEY=
 XENDIT_SANDBOX_PUBLIC_KEY=
@@ -60,6 +65,21 @@ IPAYMU_PRODUCTION_VA=
 IPAYMU_PRODUCTION_API_KEY=
 ```
 
+## Configuration
+
+You can set default callback URLs in your config/payment.php file or .env:
+
+```php
+// config/payment.php
+'callbacks' => [
+    'success_url' => env('PAYMENT_SUCCESS_URL', 'https://your-app.com/payment/success'),
+    'failure_url' => env('PAYMENT_FAILURE_URL', 'https://your-app.com/payment/failed'),
+    'notification_url' => env('PAYMENT_NOTIFICATION_URL', 'https://your-app.com/payment/notification'),
+],
+```
+
+These URLs can be overridden when creating individual payments.
+
 ## Usage
 
 ### Basic Usage
@@ -71,6 +91,7 @@ use Mrfansi\Payment\Facades\Payment;
 $response = Payment::createPayment([
     'amount' => 100000,
     'description' => 'Payment for Order #123',
+    'success_redirect_url' => 'https://yourapp.com/payment/success', // Override default callback
     'customer' => [
         'name' => 'John Doe',
         'email' => 'john@example.com',

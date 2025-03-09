@@ -33,6 +33,8 @@ class MidtransService extends AbstractPaymentService
      */
     public function createPayment(array $data): Response
     {
+        $callbacks = $this->getCallbackUrls($data);
+
         $payload = [
             'transaction_details' => [
                 'order_id' => $data['reference_id'] ?? uniqid('mdt_', true),
@@ -52,8 +54,8 @@ class MidtransService extends AbstractPaymentService
                 'unit' => 'hour'
             ],
             'callbacks' => [
-                'finish' => $data['success_redirect_url'] ?? null,
-                'error' => $data['failure_redirect_url'] ?? null
+                'finish' => $callbacks['success_redirect_url'],
+                'error' => $callbacks['failure_redirect_url']
             ]
         ];
 

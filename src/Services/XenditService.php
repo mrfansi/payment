@@ -31,13 +31,15 @@ class XenditService extends AbstractPaymentService
      */
     public function createPayment(array $data): Response
     {
+        $callbacks = $this->getCallbackUrls($data);
+
         $payload = [
             'external_id' => $data['reference_id'] ?? uniqid('xnd_', true),
             'amount' => $data['amount'],
             'description' => $data['description'] ?? null,
             'invoice_duration' => $data['duration'] ?? 86400, // 24 hours
-            'success_redirect_url' => $data['success_redirect_url'] ?? null,
-            'failure_redirect_url' => $data['failure_redirect_url'] ?? null,
+            'success_redirect_url' => $callbacks['success_redirect_url'],
+            'failure_redirect_url' => $callbacks['failure_redirect_url'],
             'payment_methods' => $data['payment_methods'] ?? null,
             'currency' => $data['currency'] ?? 'IDR',
             'customer' => [

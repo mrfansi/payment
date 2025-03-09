@@ -54,6 +54,18 @@ abstract class AbstractPaymentService implements PaymentServiceInterface
     }
 
     /**
+     * Get callback URLs from config or data
+     */
+    protected function getCallbackUrls(array $data): array
+    {
+        return [
+            'success_redirect_url' => $data['success_redirect_url'] ?? config('payment.callbacks.success_url'),
+            'failure_redirect_url' => $data['failure_redirect_url'] ?? config('payment.callbacks.failure_url'),
+            'notify_url' => $data['notify_url'] ?? config('payment.callbacks.notification_url'),
+        ];
+    }
+
+    /**
      * Make an HTTP request to the payment gateway
      */
     protected function request(string $method, string $endpoint, array $data = []): Response
