@@ -82,16 +82,23 @@ These URLs can be overridden when creating individual payments.
 
 ## Usage
 
-### Basic Usage
+### Quick Start (Using Default Gateway)
+
+The simplest way to use the package is with a default gateway. Just set your preferred gateway in .env:
+
+```env
+PAYMENT_GATEWAY=xendit
+```
+
+Then use it in your code:
 
 ```php
 use Mrfansi\Payment\Facades\Payment;
 
-// Using default gateway
+// Create payment using default gateway
 $response = Payment::createPayment([
-    'amount' => 100000,
-    'description' => 'Payment for Order #123',
-    'success_redirect_url' => 'https://yourapp.com/payment/success', // Override default callback
+    'amount' => 150000,
+    'description' => 'Order #123',
     'customer' => [
         'name' => 'John Doe',
         'email' => 'john@example.com',
@@ -99,10 +106,36 @@ $response = Payment::createPayment([
     ]
 ]);
 
+// Get payment URL based on gateway
+$paymentUrl = $response->json('invoice_url'); // for Xendit
+// or
+$paymentUrl = $response->json('token'); // for Midtrans
+// or
+$paymentUrl = $response->json('url'); // for Ipaymu
+
+// Check status
+$status = Payment::getStatus('order-123');
+
+// Cancel payment
+$cancel = Payment::cancel('order-123');
+```
+
+The package will automatically:
+
+1. Use the default gateway from your config
+2. Use default callback URLs from your config
+3. Handle all the API transformations based on the gateway
+
+### Using Specific Gateway
+
+If you need to use a specific gateway regardless of the default setting:
+
+```php
 // Using specific gateway
 $response = Payment::gateway('xendit')->createPayment([
     'amount' => 100000,
     'description' => 'Payment for Order #123',
+    'success_redirect_url' => 'https://yourapp.com/payment/success', // Override default callback
     'customer' => [
         'name' => 'John Doe',
         'email' => 'john@example.com',
