@@ -22,7 +22,7 @@ class MidtransService extends AbstractPaymentService
     protected function setupHeaders(): array
     {
         return [
-            'Authorization' => 'Basic '.base64_encode($this->config['server_key'].':'),
+            'Authorization' => 'Basic ' . base64_encode($this->config['server_key'] . ':'),
             'Content-Type' => 'application/json',
             'Accept' => 'application/json',
         ];
@@ -60,7 +60,7 @@ class MidtransService extends AbstractPaymentService
         ];
 
         return $this->request('POST', '/transactions', array_filter($payload, function ($value) {
-            return ! is_null($value) && (! is_array($value) || ! empty(array_filter($value)));
+            return !$value === null && (!is_array($value) || !empty(array_filter($value)));
         }));
     }
 
