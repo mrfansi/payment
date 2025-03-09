@@ -2,9 +2,9 @@
 
 namespace Mrfansi\Payment;
 
+use Mrfansi\Payment\Commands\PaymentCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Mrfansi\Payment\Commands\PaymentCommand;
 
 class PaymentServiceProvider extends PackageServiceProvider
 {
